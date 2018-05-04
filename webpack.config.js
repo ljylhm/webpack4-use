@@ -20,14 +20,21 @@ module.exports = {
     }
   },
   devServer: {
-    //host: "192.168.1.115",
-    host: "10.101.30.91",
+    host: "192.168.1.115",
+    //host: "10.101.30.91",
     publicPath: "/dist/",
     port: "8080",
     inline: true,
     open: true,
     compress: true, // 打包的内容进行压缩
-    hot: true
+    hot: true,
+    proxy: {
+      '/book/**': {
+        target: 'http://10.101.30.91:3000',
+        secure: false,
+        changeOrigin: true
+      }
+    }
   },
   module: {
     rules: [

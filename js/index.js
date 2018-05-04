@@ -123,17 +123,17 @@ var helper = {
     }
 
     params = Object.assign(params, options);
-    return axios(params)
+    return axios(params);
   },
 
   httpGet: function (url, data, opt) {
     var method = 'get';
-    return this.http(url, method, data, opt);
+    return this.http(method, url, data, opt);
   },
 
   httpPost: function (url, data, opt) {
     var method = 'post';
-    return this.http(url, method, data, opt);
+    return this.http(method, url, data, opt);
   },
 
 
@@ -173,7 +173,27 @@ var helper = {
     return isFlag;
   },
 
+  /************************* 数组的方法 *******************************/
+   // 数组深拷贝
+   deepClone: function(obj) {
+    var type = typeof obj == "object";
+    if (!type) return obj;
+    else {
+      var newObj = new Object();
+      for (var i in obj) {
+        newObj[i] = this.deepClone(obj[i]);
+      }
+      return newObj;
+    }
+  },
   /************************* 排序的方法 *******************************/
+
+  // 交换数组元素
+  swap: function (arr, index1, index2) {
+    var _tmp = arr[index1];
+    arr[index1] = arr[index2];
+    arr[index2] = _tmp;
+  },
   // 快速排序
   quickSort: function (arr, left, right) {
     if (arr.length < 2) return arr;
@@ -188,8 +208,26 @@ var helper = {
       [_mid],
       this.arrSort1(right, [], [])
     );
-  }
+  },
   // 冒泡排序
+  bubbleSort: function (arr) {
+    for (var i = 0, len = arr.length; i < len; i++) {
+      for (var j = 0; j < len - i; j++) {
+        if (arr[j] > arr[j + 1]) this.swap(arr, j, j + 1)
+      }
+    }
+  },
+  // 选择排序
+  selectSort: function (arr) {
+    var _cursor = "";
+    for (var i = 0, len = arr.length; i < len; i++) {
+      _cursor = 0;
+      for (var j = 0; j < len - i; j++) {
+        if (arr[j] > arr[_cursor]) _cursor = j;
+      };
+      this.swap(arr, _cursor, len - i - 1);
+    }
+  }
 };
 
 export default helper;
