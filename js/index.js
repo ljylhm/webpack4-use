@@ -1,11 +1,11 @@
 /**** 方法库 积累的常用的方法  ****/
+import axios from "axios";
 // 时间转天数
-var name = "Billy";
+var name = "Ljy";
 var helper = {
-  name: "Jack",
   version: "1.0.0",
   /************************* 数据检测类 *******************************/
-  getDataType: function(obj) {
+  getDataType: function (obj) {
     var _type = "",
       _type_str = "";
 
@@ -16,7 +16,7 @@ var helper = {
   },
 
   // 检测是否为空对象
-  isEmptyObject: function(obj) {
+  isEmptyObject: function (obj) {
     for (var key in obj) {
       return false;
     }
@@ -24,7 +24,7 @@ var helper = {
   },
 
   // 检测 argruments 是否存在且不为零
-  argCheck: function() {
+  argCheck: function () {
     if (this.isEmptyObject(arguments)) return false;
     for (var i in arguments) {
       if (!arguments[i] && arguments[i] != 0) {
@@ -36,17 +36,17 @@ var helper = {
   },
 
   /************************* 浏览器存储 *******************************/
-  sessionSet: function(name, value) {
+  sessionSet: function (name, value) {
     if (!this.argCheck(name, value)) return;
     sessionStorage.setItem(name, value);
   },
 
-  sessionGet: function(name) {
+  sessionGet: function (name) {
     if (!this.argCheck(name)) return window.sessionStorage;
     return sessionStorage.getItem(name);
   },
 
-  sessionClear: function(name) {
+  sessionClear: function (name) {
     var sessionJson = window.sessionStorage;
     if (!this.argCheck(name) && !this.isEmptyObject(sessionJson)) {
       sessionJson.clear();
@@ -54,17 +54,17 @@ var helper = {
     sessionJson.removeItem(name);
   },
 
-  localStroageSet: function(name, value) {
+  localStroageSet: function (name, value) {
     if (!this.argCheck(name, value)) return;
     localStorage.setItem(name, value);
   },
 
-  localStroageGet: function(name) {
+  localStroageGet: function (name) {
     if (!this.argCheck(name)) return window.localStorage;
     localStorage.getItem(name);
   },
 
-  localStroageClear: function(name) {
+  localStroageClear: function (name) {
     var localStroageJson = window.localStroage;
     if (!this.argCheck(name) && !this.isEmptyObject(localStroageJson)) {
       localStroageJson.clear();
@@ -74,14 +74,14 @@ var helper = {
 
   /************************* 时间戳 *******************************/
   // 时间戳转换为天数 时间戳皆转为毫秒
-  praseDays: function(timeStamp) {
+  praseDays: function (timeStamp) {
     var tDayStamp = 1000 * 60 * 60 * 24;
     var tDiff = Math.floor(timeStamp / tDayStamp);
     return tDiff;
   },
 
   // 获取时间戳
-  getTimeStamp: function(time) {
+  getTimeStamp: function (time) {
     if (!time) return Math.round(new Date().getTime());
     else {
       if (this.getDataType(time) != "Date") {
@@ -92,7 +92,7 @@ var helper = {
   },
 
   // 转换为相差的天数 向下取整
-  transformDays: function(sDate1, sDate2) {
+  transformDays: function (sDate1, sDate2) {
     sDate2 = sDate2 ? sDate2 : new Date();
     var _stamp1 = this.getTimeStamp(sDate1),
       _stamp2 = this.getTimeStamp(sDate2);
@@ -100,14 +100,50 @@ var helper = {
   },
 
   /************************* http请求 *******************************/
+  // http 请求的拦截器 暴露一个请求的内容给cb 一定要有返回值
+  httpReqInterceptr: function (cb) {
+    axios.interceptors.request.use(cb)
+  },
+  // http 返回的拦截器 暴露一个返回的内容给cb 一定要有返回值
+  httpReqInterceptr: function (cb) {
+    axios.interceptors.response.use(cb)
+  },
+
+  http: function (method, url, data, options) {
+    method = method || "GET";
+    data = data || {};
+    options = options || {};
+    if (!url) console.error("[http]url is must");
+
+    var params = {
+      url: url,
+      method: method,
+      data: data,
+      timeout: 2000,
+    }
+
+    params = Object.assign(params, options);
+    return axios(params)
+  },
+
+  httpGet: function (url, data, opt) {
+    var method = 'get';
+    return this.http(url, method, data, opt);
+  },
+
+  httpPost: function (url, data, opt) {
+    var method = 'post';
+    return this.http(url, method, data, opt);
+  },
+
 
   /************************* 字符串方法 *******************************/
   // 获得对应字符串的数量
-  getCharNum: function(str1, str2) {
+  getCharNum: function (str1, str2) {
     if (!this.argCheck(str1, str2)) return 0;
     var count = 0,
       reg = new RegExp(str2, "g");
-    str1.replace(reg, function() {
+    str1.replace(reg, function () {
       count++;
     });
     return count;
@@ -115,7 +151,7 @@ var helper = {
 
   /************************* 对象的方法 *******************************/
   // 判断是否两个对象是否相等
-  isEql: function(obj1, obj2) {
+  isEql: function (obj1, obj2) {
     var _arr1 = [],
       _arr2 = [];
     var isFlag = true;
@@ -131,7 +167,7 @@ var helper = {
         _arr2.push(obj2[i]);
       }
     }
-    _arr1.forEach(function(ele, index, arr) {
+    _arr1.forEach(function (ele, index, arr) {
       isFlag = isFlag && isEql(_arr1[index], _arr2[index]);
     });
     return isFlag;
@@ -139,11 +175,11 @@ var helper = {
 
   /************************* 排序的方法 *******************************/
   // 快速排序
-  quickSort: function(arr, left, right) {
+  quickSort: function (arr, left, right) {
     if (arr.length < 2) return arr;
     var _mid = arr.splice(0, 1)[0];
 
-    arr.forEach(function(ele, index, arr) {
+    arr.forEach(function (ele, index, arr) {
       if (ele < _mid) left.push(ele);
       else right.push(ele);
     });
