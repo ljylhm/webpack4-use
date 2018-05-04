@@ -27,7 +27,14 @@ module.exports = {
     inline: true,
     open: true,
     compress: true, // 打包的内容进行压缩
-    hot: true
+    hot: true,
+    proxy: {
+      '/book/**': {
+        target: 'http://10.101.30.91:3000',
+        secure: false,
+        changeOrigin: true
+      }
+    }
   },
   module: {
     rules: [
