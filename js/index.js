@@ -190,11 +190,7 @@ var helper = {
       if (ele < _mid) left.push(ele);
       else right.push(ele);
     });
-
-    return this.arrSort1(left, [], []).concat(
-      [_mid],
-      this.arrSort1(right, [], [])
-    );
+    return this.arrSort1(left, [], []).concat([_mid], this.arrSort1(right, [], []));
   },
   // 冒泡排序
   bubbleSort: function (arr) {
@@ -210,7 +206,7 @@ var helper = {
     for (var i = 0, len = arr.length; i < len; i++) {
       _cursor = 0;
       for (var j = 0; j < len - i; j++) {
-        if (arr[j] > arr[_cursor]) _cursor = j;
+        _cursor = arr[j] > arr[_cursor] ? j : _cursor;
       };
       this.swap(arr, _cursor, len - i - 1);
     }
