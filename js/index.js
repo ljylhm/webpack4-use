@@ -203,15 +203,7 @@ var helper = {
       if (ele < _mid) left.push(ele);
       else right.push(ele);
     });
-<<<<<<< HEAD
-
-    return this.arrSort1(left, [], []).concat(
-      [_mid],
-      this.arrSort1(right, [], [])
-    );
-=======
     return this.arrSort1(left, [], []).concat([_mid], this.arrSort1(right, [], []));
->>>>>>> ed9f028eac02f77b37208ea78c3f7c3bbd220e96
   },
   // 冒泡排序
   bubbleSort: function (arr) {
@@ -227,11 +219,7 @@ var helper = {
     for (var i = 0, len = arr.length; i < len; i++) {
       _cursor = 0;
       for (var j = 0; j < len - i; j++) {
-<<<<<<< HEAD
-        if (arr[j] > arr[_cursor]) _cursor = j;
-=======
         _cursor = arr[j] > arr[_cursor] ? j : _cursor;
->>>>>>> ed9f028eac02f77b37208ea78c3f7c3bbd220e96
       };
       this.swap(arr, _cursor, len - i - 1);
     }
