@@ -174,8 +174,8 @@ var helper = {
   },
 
   /************************* 数组的方法 *******************************/
-   // 数组深拷贝
-   deepClone: function(obj) {
+  // 数组深拷贝
+  deepClone: function (obj) {
     var type = typeof obj == "object";
     if (!type) return obj;
     else {
