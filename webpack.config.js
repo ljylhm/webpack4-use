@@ -20,8 +20,8 @@ module.exports = {
     }
   },
   devServer: {
-    host: "192.168.1.115",
-    //host: "10.101.30.91",
+    //host: "192.168.1.115",
+    host: "10.101.30.91",
     publicPath: "/dist/",
     port: "8080",
     inline: true,

@@ -174,8 +174,8 @@ var helper = {
   },
 
   /************************* 数组的方法 *******************************/
-   // 数组深拷贝
-   deepClone: function(obj) {
+  // 数组深拷贝
+  deepClone: function (obj) {
     var type = typeof obj == "object";
     if (!type) return obj;
     else {
@@ -186,8 +186,26 @@ var helper = {
       return newObj;
     }
   },
+  // 去除数组中重复的部分
+  clearRepeate: function (arr) {
+    return [...new Set(arr)];
+  },
+  // 去除数组中重复的部分
+  clearRepeateObj: function (arr, id) {
+    var obj = {};
+    var newArr = arr.reduce((pre, cur, index, arr) => {
+      obj[cur[id]] ? "" : obj[cur[id]] = true && pre.push(cur);
+      return pre;
+    }, [])
+    return newArr;
+  },
+  // 数组求和
+  arrSum: function (arr) {
+    return arr.reduce((pre, cur) => {
+      return pre + cur;
+    });
+  },
   /************************* 排序的方法 *******************************/
-
   // 交换数组元素
   swap: function (arr, index1, index2) {
     var _tmp = arr[index1];
