@@ -1,10 +1,17 @@
 const path = require("path");
+let webpack = require('webpack');
+let ExtractTextPlugin = require("extract-text-webpack-plugin");
 
+let envName = process.env.npm_lifecycle_event; // npm_lifecycle_event 是node环境自带的用来
+let envPack = {
+  isDev: envName.indexOf("dev") >= 0,
+  isBuild: envName.indexOf("build") >= 0
+}
 module.exports = {
   entry: "./js/main.js",
   output: {
     path: path.resolve(__dirname, "dist"),
-    filename: "bundle.js"
+    filename: "main.js"
   },
   devtool: "inline-source-map",
   resolve: {
@@ -36,15 +43,68 @@ module.exports = {
       }
     }
   },
+  // watch:{
+  //   poll:1000,//监测修改的时间(ms)
+  //   aggregeateTimeout:500, //防止重复按键，500毫米内算按键一次
+  //   ignored:/node_modules/,//不监测
+  // },
   module: {
     rules: [
       {
         test: /\.js$/,
         loader: "babel-loader",
-        exclude: /node_modules/
-      }
-    ]
+        exclude: /node_modules/ 
+      }, {
+        test: /\.css$/,
+        use:ExtractTextPlugin.extract({ // 将css提取出来
+          fallback: "style-loader",
+          publicPath: "./",
+          use: [{
+            loader:"css-loader"
+          },{
+            loader:"postcss-loader"
+          }]
+        })
+      },{
+        test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
+        loader: 'file-loader'
+      },{
+        test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
+        use: [{
+          loader: "file-loader",
+          options: {
+            limit: 8096,
+            name: '[name].[ext]',
+            outputPath:"img/",
+            publicPath: "https://file.40017.cn/huochepiao/activity/20180501sweepCode/img"
+          }
+        }]
+    }]
   }
 };
+
+// plugins 是一个数组
+// 区分开发环境和测试环境
+module.exports.plugins = (module.exports.plugins || []).concat([
+  new webpack.DefinePlugin({ // 定义全局变量
+    'process.env': {
+      curEnv: '"' + envName + '"'
+    }
+  }),
+  new ExtractTextPlugin("main.css")
+])
+
+// 当前环境为生产环境
+// module.exports.plugins = (module.exports.plugins || []).concat([
+//   new MiniCssExtractPlugin({
+//     filename: "css/[name].css",
+//     chunkFilename: "css/[id].css"
+//   })
+// ])
+
+
+// https://file.40017.cn/huochepiao/activity/20180501sweepCode/img/share.png
+
+
 
 

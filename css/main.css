@@ -1,0 +1,15 @@
+.container1{
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+}
+.container2{
+    width: 100%;
+    height: 100px;
+    position: relative;
+    border: 1px solid #000;
+}
+.container2 .content{
+    background: url("../img/ball.png") no-repeat center center;
+}
