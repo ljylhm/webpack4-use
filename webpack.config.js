@@ -53,33 +53,35 @@ module.exports = {
       {
         test: /\.js$/,
         loader: "babel-loader",
-        exclude: /node_modules/ 
+        exclude: /node_modules/
       }, {
         test: /\.css$/,
-        use:ExtractTextPlugin.extract({ // 将css提取出来
+        use: ExtractTextPlugin.extract({ // 将css提取出来
           fallback: "style-loader",
           publicPath: "./",
           use: [{
-            loader:"css-loader"
-          },{
-            loader:"postcss-loader"
+            loader: "css-loader"
+          }, {
+            loader: "postcss-loader"
           }]
         })
-      },{
+      }, {
         test: /\.(eot|svg|ttf|woff|woff2)(\?\S*)?$/,
         loader: 'file-loader'
-      },{
+      },
+      {
         test: /\.(png|jpe?g|gif|svg)(\?\S*)?$/,
         use: [{
           loader: "file-loader",
           options: {
             limit: 8096,
-            name: '[name].[ext]',
-            outputPath:"img/",
-            publicPath: "https://file.40017.cn/huochepiao/activity/20180501sweepCode/img"
+            name: '[name].[ext]?[hash]',
+            outputPath: "img/",
+            // publicPath: "https://file.40017.cn/huochepiao/activity/20180501sweepCode/img"
           }
         }]
-    }]
+      }
+    ]
   }
 };
 
@@ -94,16 +96,6 @@ module.exports.plugins = (module.exports.plugins || []).concat([
   new ExtractTextPlugin("main.css")
 ])
 
-// 当前环境为生产环境
-// module.exports.plugins = (module.exports.plugins || []).concat([
-//   new MiniCssExtractPlugin({
-//     filename: "css/[name].css",
-//     chunkFilename: "css/[id].css"
-//   })
-// ])
-
-
-// https://file.40017.cn/huochepiao/activity/20180501sweepCode/img/share.png
 
 
 
