@@ -14,7 +14,16 @@ var helper = {
 
     return _type_str;
   },
-
+  // 检查是否为数字类型
+  isNumber: function (num) {
+    return this.getDataType(num) == "Number";
+  },
+  isBoolean: function (bol) {
+    return this.getDataType(bol) == "Boolean";
+  },
+  isString: function (str) {
+    return this.getDataType(str) == "String";
+  },
   // 检测是否为空对象
   isEmptyObject: function (obj) {
     for (var key in obj) {
@@ -240,6 +249,35 @@ var helper = {
         _cursor = arr[j] > arr[_cursor] ? j : _cursor;
       };
       this.swap(arr, _cursor, len - i - 1);
+    }
+  },
+  /************************* Window的方法 *******************************/
+  scrollTop: function () { // 获取和设置距离顶部的距离
+    var c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (!this.argCheck(arguments)) return c;
+    var _arg = arguments[0];
+    if (_arg && this.isNumber(_arg)) document.documentElement.scrollTop = document.body.scrollTop = _arg;
+  },
+  scrollToTop: function () { // 当前位置滑动到顶部
+    var c = document.documentElement.scrollTop || document.body.scrollTop;
+    if (c > 0) {
+      var _ = this;
+      window.requestAnimationFrame(function () { // requestAnimationFrame 本质其实是一个定时器);
+        _.scrollToTop(hight);
+      })
+      window.scrollTo(0, c - c / 16);
+    }
+  },
+  scrollToHeight: function (height) { // 当前位置滑动到顶部
+    var c = document.documentElement.scrollTop || document.body.scrollTop,
+      flag = c > height ? true : false, // "up" : "down"
+      _self = this;
+    if (Math.abs(c - height) > 20) {
+      window.requestAnimationFrame(function () {
+        _self.scrollToHeight(height);
+      })
+      if (flag) window.scrollTo(0, c - 20);
+      else window.scrollTo(0, c + 20);
     }
   }
 };
