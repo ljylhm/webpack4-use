@@ -14,15 +14,17 @@ var helper = {
 
     return _type_str;
   },
-  // 检查是否为数字类型
-  isNumber: function (num) {
+  isNumber: function (num) { // 检查是否为数字类型
     return this.getDataType(num) == "Number";
   },
-  isBoolean: function (bol) {
+  isBoolean: function (bol) { // 检查是否为布尔类型
     return this.getDataType(bol) == "Boolean";
   },
-  isString: function (str) {
+  isString: function (str) { // 检查是否为字符串类型
     return this.getDataType(str) == "String";
+  },
+  inBrowser: function () { // 检查是否在浏览器
+    return typeof window !== 'undefined';
   },
   // 检测是否为空对象
   isEmptyObject: function (obj) {
@@ -80,7 +82,23 @@ var helper = {
     }
     localStroageJson.removeItem(name);
   },
-
+  /************************* 关于URL *******************************/
+  getUrl: function () { // 返回完整的url
+    return window.location.href;
+  },
+  getHash: function () {
+    // We can't use window.location.hash here because it's not
+    // consistent across browsers - Firefox will pre-decode it!
+    var href = window.location.href
+    var index = href.indexOf('#')
+    return index === -1 ? '' : href.slice(index + 1)
+  },
+  setHashUrl: function (path) { // path为hash
+    var href = window.location.href
+    var i = href.indexOf('#')
+    var base = i >= 0 ? href.slice(0, i) : href
+    return base + "#" + path
+  },
   /************************* 时间戳 *******************************/
   // 时间戳转换为天数 时间戳皆转为毫秒
   praseDays: function (timeStamp) {
@@ -213,6 +231,13 @@ var helper = {
     return arr.reduce((pre, cur) => {
       return pre + cur;
     });
+  },
+  // 比较两个数组中不同的地方
+  difference: function (a, b) {
+    var s = new Set(a);
+    return b.filter((x) => {
+      !s.has(x);
+    })
   },
   /************************* 排序的方法 *******************************/
   // 交换数组元素
